@@ -1,0 +1,7 @@
+# Skip env files
+.env
+.env*
+.env.*
+
+# Skip node_modules
+node_modules
