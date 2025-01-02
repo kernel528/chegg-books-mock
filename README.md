@@ -358,6 +358,7 @@ Goals:
     Using environment: development
     Ran 4 seed files
     ```
+    - Validate data exists with DBeaver.
 10. Create the service functions for the books, authors, and genres resources. [Module 3.10.6: CRUD with Knex](https://students.skills.chegg.com/curriculum/BACK_END-501/be-backend-web-development/be-node-express-and-postgres/be-crud-with-knex)
     - Intent is to create the service functions for the books, authors, and genres resources.  Examples would be to:
       - list all books, 
@@ -366,9 +367,15 @@ Goals:
       - delete a book.
       - Count the number of books.
       - Get a book by id.
-    - Create a `books.service.js` file in the `src/books` folder.
-    - Create a `authors.service.js` file in the `src/authors` folder.
-    - Create a `genres.service.js` file in the `src/genres` folder.
-    - Implement the service functions for the books, authors, and genres resources.
-9. Create a `utils` folder with the following files:
-   - `utils.js`
+      - Create a `books.service.js` file in the `src/books` folder.
+      - Create a `authors.service.js` file in the `src/authors` folder.
+      - Create a `genres.service.js` file in the `src/genres` folder.
+      - Implement the service functions for the books, authors, and genres resources.
+
+### Deploy to Production
+- Update and Deploy to Production
+- Update the `knexfile.js` file to include the production configuration.
+- Update the `.env` file to store the production database connection string.
+- Run the migrations and seeds in the production environment.
+- Deploy the application to a production server.
+- Test the application in the production environment.
