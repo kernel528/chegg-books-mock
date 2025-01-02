@@ -2,22 +2,29 @@ const path = require("path");
 /**
  * @type {{}}
  */
+
 // const books = require("../data/books-data.js");
 const nextId = require("../utils/nextId");
-const service = require("./books.service");
-// const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
+const booksService = require("./books.service");
+const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 /*  *** GET:list *** */ // Pre-refactor with knex service
 // function list(req, res) {
 //     res.json({ data: books }); // Pre-refactor with knex service
 // }
 
-/* *** GET:list *** */
-function listBooks(req, res, next) {
-    service
-        .listBooks()
-        .then((data) => res.json({ data }))
-        .catch(next);
+/* *** GET:list *** */ // Post-refactor with knex service
+// function listBooks(req, res, next) {
+//     booksService
+//         .listBooks()
+//         .then((data) => res.json({ data }))
+//         .catch(next);
+// }
+
+/* *** GET:list *** */ // Post-refactor with knex service + async/await
+async function listBooks(req, res) {
+    const data = await booksService.listBooks();
+    res.json({ data });
 }
 
 /*  *** POST:create *** */
@@ -106,10 +113,36 @@ function deleteBook(req, res) {
     res.sendStatus(204);
 }
 
+// Practice setting up aggregate functions with async and await style.
+async function countBooks(req, res) {
+    res.json({ data: await booksService.countBooks() });
+}
+
+async function listOutOfStockBooks(req, res) {
+    res.json({ data: await booksService.listOutOfStockBooks() });
+}
+
+async function listInStockBooks(req, res) {
+    res.json({ data: await booksService.listInStockBooks() });
+}
+
+async function countInStockBooks(req, res) {
+    res.json({ data: await booksService.countInStockBooks() });
+}
+
+async function countOutOfStockBooks(req, res) {
+    res.json({ data: await booksService.countOutOfStockBooks() });
+}
+
 module.exports = {
-    list: [listBooks],
+    list: asyncErrorBoundary(listBooks),
     read: [bookExists, read],
     create: [validateBookData, create],
     update: [bookExists, validateBookData, updateBook],
     deleteBook: [bookExists, deleteBook],
+    countBooks: asyncErrorBoundary(countBooks),
+    listOutOfStockBooks: asyncErrorBoundary(listOutOfStockBooks),
+    listInStockBooks: asyncErrorBoundary(listInStockBooks),
+    countInStockBooks: asyncErrorBoundary(countInStockBooks),
+    countOutOfStockBooks: asyncErrorBoundary(countOutOfStockBooks),
 }
