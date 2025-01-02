@@ -2,14 +2,22 @@ const path = require("path");
 /**
  * @type {{}}
  */
-const books = require("../data/books-data.js");
+// const books = require("../data/books-data.js");
 const nextId = require("../utils/nextId");
-// const service = require("./books.service");
+const service = require("./books.service");
 // const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
-/*  *** GET:list *** */
-function list(req, res) {
-    res.json({ data: books });
+/*  *** GET:list *** */ // Pre-refactor with knex service
+// function list(req, res) {
+//     res.json({ data: books }); // Pre-refactor with knex service
+// }
+
+/* *** GET:list *** */
+function listBooks(req, res, next) {
+    service
+        .listBooks()
+        .then((data) => res.json({ data }))
+        .catch(next);
 }
 
 /*  *** POST:create *** */
@@ -99,7 +107,7 @@ function deleteBook(req, res) {
 }
 
 module.exports = {
-    list,
+    list: [listBooks],
     read: [bookExists, read],
     create: [validateBookData, create],
     update: [bookExists, validateBookData, updateBook],
