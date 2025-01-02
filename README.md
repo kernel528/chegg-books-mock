@@ -241,9 +241,25 @@ Goals:
    - Use `npx knex migrate:make createAuthorsTable` to create the `authors` migration file.
    - Use `npx knex migrate:make createBooksTable` to create the `books` migration file.
    - Use `npx knex migrate:make createBooks_GenresTable` to create the `books_genres` migration file.
+   - Should be four files listed when running `npx knex migrate:list`.
+     ```bash
+     : npx knex -- migrate:list
+     Using environment: development
+     No Completed Migration files Found.
+     Found 4 Pending Migration file/files.
+     20250102002758_createGenresTable.js
+     20250102003004_createAuthorsTable.js
+     20250102003013_createBooksTable.js
+     20250102003025_createBooks_GenresTable.js
+     ```
 6. Update the migrations files with table schema.
    - Update the `up` and `down` functions in the migration files to create and drop the tables.
-   - Use `npx knex migrate:latest` to run the migrations.
+   - Use `npx knex -- migrate:latest` to run the migrations.
+     ```bash
+     : npx knex -- migrate:latest
+     Using environment: development
+     Batch 1 run: 4 migrations 
+     ```
    - Check the database to ensure the tables were created.
 7. Use `knex` to create seed files for the tables.
    - Use `npx knex seed:make seedGenres` to create the `genres` seed file.
