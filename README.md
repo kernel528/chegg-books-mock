@@ -190,43 +190,43 @@ Goals:
     - PUT (update a book by id), 
     - DELETE (remove a book by id) routes.
 
-### Integrate with Postgres DB using Knex
-1. Setup knex and postgres DB.
-   - Install knex:  `npm install knex`
+### Integrate with Postgres DB using Knex 
+1. Setup knex and postgres DB. [Module 3.10.2: Knex Configuration](https://students.skills.chegg.com/curriculum/BACK_END-501/be-backend-web-development/be-node-express-and-postgres/be-knex-configuration)
+    - Install knex:  `npm install knex`
    - Install pg:  `npm install pg`
 2. Initialize knex:  `npx knex init`
-     - Update the `knexfile.js` file to include the development and production configurations.
-       - The default file will need some tweaking to match Chegg Skills pattern, but it's a good starting point. Setup the `development` and `production` configurations the same.
-       - Update the `knexfile.js` file to include the database connection string.  This will come from the `.env` file.
-       - Hardcoded example (only):
-       ```javascript
-         module.exports = {
-            development: {
-              client: 'pg',
-              connection: 'postgres://username:password@localhost:5432/chegg_books_dev',
-              migrations: {
-                 directory: './src/db/migrations',
-              },
-              seeds: {
-                 directory: './src/db/seeds',
-              },
+   - Update the `knexfile.js` file to include the development and production configurations.
+     - The default file will need some tweaking to match Chegg Skills pattern, but it's a good starting point. Setup the `development` and `production` configurations the same.
+     - Update the `knexfile.js` file to include the database connection string.  This will come from the `.env` file.
+     - Hardcoded example (only):
+     ```javascript
+       module.exports = {
+          development: {
+            client: 'pg',
+            connection: 'postgres://username:password@localhost:5432/chegg_books_dev',
+            migrations: {
+               directory: './src/db/migrations',
             },
-            production: {
-              client: 'pg',
-              connection: 'postgres://username:password@localhost:5432/chegg_books_prod',
-              migrations: {
-                 directory: './src/db/migrations',
-              },
-              seeds: {
-                 directory: './src/db/seeds',
-              },
+            seeds: {
+               directory: './src/db/seeds',
             },
-         };
-         ```
+          },
+          production: {
+            client: 'pg',
+            connection: 'postgres://username:password@localhost:5432/chegg_books_prod',
+            migrations: {
+               directory: './src/db/migrations',
+            },
+            seeds: {
+               directory: './src/db/seeds',
+            },
+          },
+       };
+       ```
 3. Update the `.env` file to store the database connection string.
    - `DEVELOPMENT_DATABASE_URL=postgres://username:password@localhost:5432/chegg_books_dev?SSL=true`
    - `PRODUCTION_DATABASE_URL=postgres://username:password@localhost:5432/chegg_books_prod`
-4. Setup DB `connection.js` file
+4. Setup DB `connection.js` file [Module 3.10.3: Connecting to the database with Knex](https://students.skills.chegg.com/curriculum/BACK_END-501/be-backend-web-development/be-node-express-and-postgres/be-connecting-to-the-database-with-knex)
    - Create a `db` under the `src` folder and create the a `connection.js` file in the `db` folder.
    - Update the `connection.js` file to include the database connection.
      ```javascript
@@ -236,7 +236,7 @@ Goals:
       
       module.exports = knex;
       ```
-5. Use `knex` to create migrations files for the tables. In this order due to relations.  Refer to `setup/Notes.md` and ERD for more info...
+5. Use `knex` to create migrations files for the tables. In this order due to relations.  Refer to `setup/Notes.md` and ERD for more info... [Module 3.10.4: Migrations with Knex](https://students.skills.chegg.com/curriculum/BACK_END-501/be-backend-web-development/be-node-express-and-postgres/be-migrations-with-knex)
    - Use `npx knex migrate:make createGenresTable` to create the `genres` migration file.
    - Use `npx knex migrate:make createAuthorsTable` to create the `authors` migration file.
    - Use `npx knex migrate:make createBooksTable` to create the `books` migration file.
@@ -260,18 +260,115 @@ Goals:
      Using environment: development
      Batch 1 run: 4 migrations 
      ```
+   - Error: Initially I was running into this error, and it was due to not properly defining the book_id and genre_id as foreign keys in the createBooksTable file.
+      ```bash
+        : npx knex -- migrate:latest
+        Using environment: development
+        migration file "20250102003013_createBooksTable.js" failed
+        migration failed with error: table.foreign(...).references(...).inTable is not a function
+        table.foreign(...).references(...).inTable is not a function
+        TypeError: table.foreign(...).references(...).inTable is not a function
+        at TableBuilder._fn (/Users/joe/github/kernel528/Chegg-Skills/Projects/Backend-Web-Dev/Mock Interview Prep/chegg-books-mock/src/db/migrations/20250102003013_createBooksTable.js:13:14)
+        at TableBuilder.toSQL (/Users/joe/github/kernel528/Chegg-Skills/Projects/Backend-Web-Dev/Mock Interview Prep/chegg-books-mock/node_modules/knex/lib/schema/tablebuilder.js:48:16)
+        at SchemaCompiler_PG.build (/Users/joe/github/kernel528/Chegg-Skills/Projects/Backend-Web-Dev/Mock Interview Prep/chegg-books-mock/node_modules/knex/lib/schema/compiler.js:144:23)
+        at SchemaCompiler_PG.createTable (/Users/joe/github/kernel528/Chegg-Skills/Projects/Backend-Web-Dev/Mock Interview Prep/chegg-books-mock/node_modules/knex/lib/schema/compiler.js:165:13)
+        at SchemaCompiler_PG.toSQL (/Users/joe/github/kernel528/Chegg-Skills/Projects/Backend-Web-Dev/Mock Interview Prep/chegg-books-mock/node_modules/knex/lib/schema/compiler.js:97:26)
+        at SchemaBuilder.toSQL (/Users/joe/github/kernel528/Chegg-Skills/Projects/Backend-Web-Dev/Mock Interview Prep/chegg-books-mock/node_modules/knex/lib/schema/builder.js:36:45)
+        at ensureConnectionCallback (/Users/joe/github/kernel528/Chegg-Skills/Projects/Backend-Web-Dev/Mock Interview Prep/chegg-books-mock/node_modules/knex/lib/execution/internal/ensure-connection-callback.js:4:30)
+        at Runner.ensureConnection (/Users/joe/github/kernel528/Chegg-Skills/Projects/Backend-Web-Dev/Mock Interview Prep/chegg-books-mock/node_modules/knex/lib/execution/runner.js:318:20)
+        at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+        at async Runner.run (/Users/joe/github/kernel528/Chegg-Skills/Projects/Backend-Web-Dev/Mock Interview Prep/chegg-books-mock/node_modules/knex/lib/execution/runner.js:30:19)
+      ```
+   - Successful migration run...
+     ```bash
+     : npx knex -- migrate:latest
+     Using environment: development
+     Batch 1 run: 4 migrations 
+     Error: relation "books_genres" does not exist
+     ```
    - Check the database to ensure the tables were created.
-7. Use `knex` to create seed files for the tables.
-   - Use `npx knex seed:make seedGenres` to create the `genres` seed file.
-   - Use `npx knex seed:make seedAuthors` to create the `authors` seed file.
-   - Use `npx knex seed:make seedBooks` to create the `books` seed file.
-   - Use `npx knex seed:make seedBooks_Genres` to create the `books_genres` seed file.
-   - Update the seed files with sample data.
-   - Run the seed files with `npx knex seed:run`.
-8. Create the service functions for the books, authors, and genres resources.
-   - Create a `books.service.js` file in the `src/books` folder.
-   - Create a `authors.service.js` file in the `src/authors` folder.
-   - Create a `genres.service.js` file in the `src/genres` folder.
-   - Implement the service functions for the books, authors, and genres resources.
+7. Use `knex` to create seed files for the tables. [Module 3.10.5: Seeding Data with Knex](https://students.skills.chegg.com/curriculum/BACK_END-501/be-backend-web-development/be-node-express-and-postgres/be-seeding-data-with-knex)
+    - Use `npx knex seed:make 00-genres` to create the `genres` seed file.
+   - Use `npx knex seed:make 01-authors` to create the `authors` seed file.
+   - Use `npx knex seed:make 02-books` to create the `books` seed file.
+   - Use `npx knex seed:make 03-books_genres` to create the `books_genres` seed file.
+   - Update the seed files with require to the location of the seeded data: `src/db/fixtures/seed_data.sql`.
+8. Create the seed files with sample data.  Going to use the `fixtures` folder name for the seed data.
+   - Update the seed files in `fixtures` with sample data.
+   - I used chatGPT to help convert the `setup` sql files to seed data.
+   - I ran into an error as I missed adding the `in_stock`to the books table.
+     - Error:  `column "in_stock" of relation "books" does not exist`
+   - I created another migration file to include the `in_stock` column.
+       ```bash
+       : npx knex migrate:make add_in_stock_to_books
+       Using environment: development
+       Using environment: development
+       Using environment: development
+       Created Migration: /Users/joe/github/kernel528/Chegg-Skills/Projects/Backend-Web-Dev/Mock Interview Prep/chegg-books-mock/src/db/migrations/20250102031654_add_in_stock_to_books.js
+      ```
+   - Updated the `20250102031654_add_in_stock_to_books.js` file to include the `in_stock` column.
+      ```javascript
+       exports.up = function(knex) {
+         return knex.schema.table('books', (table) => {
+             table.boolean('in_stock').defaultTo(true);
+         });
+       };
+     
+       exports.down = function(knex) {
+         return knex.schema.table('books', (table) => {
+           table.dropColumn('in_stock');
+         });
+       };
+     ```
+    - This resolved the error for `in_stock` but I ran into another error for `publication_year`.
+        - Error:  `column "publication_year" of relation "books" does not exist`
+    - I created another migration file to include the `publication_year` column.
+       ```bash
+       : npx knex migrate:make add_publication_year_to_books
+       Using environment: development
+       Using environment: development
+       Using environment: development
+       Created Migration: /Users/joe/github/kernel528/Chegg-Skills/Projects/Backend-Web-Dev/Mock Interview Prep/chegg-books-mock/src/db/migrations/20250102031854_add_publication_year_to_books.js
+      ```
+    - Another column error encountered. `column "title" of relation "books" does not exist`
+    - I created another migration file to include the `title` column.
+       ```bash
+       : npx knex migrate:make add_title_to_books
+       Using environment: development
+       Using environment: development
+       Using environment: development
+       Created Migration: /Users/joe/github/kernel528/Chegg-Skills/Projects/Backend-Web-Dev/Mock Interview Prep/chegg-books-mock/src/db/migrations/20250102032054_add_title_to_books.js
+      ```
+    - This time I ran into an error due to violating not-null constraint.
+       - Error:  `null value in column "book_title" of relation "books" violates not-null constraint`
+      ```bash
+       npx knex migrate:make rename_book_title_to_title
+       Using environment: development
+      ```
+    - The move to add `title` was not successful.  So, I rolled it back after fixing the missing price and "genre_id" column errors.
+      ```bash
+      : npx knex migrate:rollback
+      Using environment: development
+      Batch 4 rolled back: 1 migrations
+
+      ```
+9. Run the seed files with `npx knex seed:run`. 
+    ```bash
+    : npx knex seed:run        
+    Using environment: development
+    Ran 4 seed files
+    ```
+10. Create the service functions for the books, authors, and genres resources. [Module 3.10.6: CRUD with Knex](https://students.skills.chegg.com/curriculum/BACK_END-501/be-backend-web-development/be-node-express-and-postgres/be-crud-with-knex)
+    - Intent is to create the service functions for the books, authors, and genres resources.  Examples would be to:
+      - list all books, 
+      - add a new book, 
+      - update a book, 
+      - delete a book.
+      - Count the number of books.
+      - Get a book by id.
+    - Create a `books.service.js` file in the `src/books` folder.
+    - Create a `authors.service.js` file in the `src/authors` folder.
+    - Create a `genres.service.js` file in the `src/genres` folder.
+    - Implement the service functions for the books, authors, and genres resources.
 9. Create a `utils` folder with the following files:
    - `utils.js`
