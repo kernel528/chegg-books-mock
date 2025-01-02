@@ -1,0 +1,12 @@
+# Postgres DB Table Setup Files
+- This setup used the `chegg_books_obiwan` database running in a docker container on my localhost.
+- I actually used DBeaver to run the SQL files to run manual data load to `chegg_books_obiwan` mock database.
+  - `/Users/joe/Library/DBeaverData/workspace6/General/Scripts/mock_db_seed.sql`
+  - See screenshots for visual before/after.
+- These are used to setup and populate the tables manually.
+    - Order of Setup:
+        - genres.sql
+        - authors.sql
+        - books.sql
+        - books_genres.sql
+- The seed.sql has sample data for each table.  
