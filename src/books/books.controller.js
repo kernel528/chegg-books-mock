@@ -65,23 +65,40 @@ function validateBookData(req, res, next) {
 }
 
 /*   *** READ ***   */
-// Middleware to find a book by book_id
-function bookExists(req, res, next) {
-    const { bookId } = req.params;
-    const book = books.find((book) => book.book_id === bookId); // Match book_id as a string
+// Middleware to find a book by book_id --> Pre-refactor with knex service
+// function bookExists(req, res, next) {
+//     const { bookId } = req.params;
+//     const book = books.find((book) => book.book_id === bookId); // Match book_id as a string
+//
+//     if (book) {
+//         res.locals.book = book; // Store the found book in res.locals
+//         return next(); // Proceed to the next middleware or route handler
+//     } else {
+//         next({ status: 404, message: `Book with ID ${bookId} not found.` });
+//     }
+// }
 
-    if (book) {
-        res.locals.book = book; // Store the found book in res.locals
-        return next(); // Proceed to the next middleware or route handler
-    } else {
-        next({ status: 404, message: `Book with ID ${bookId} not found.` });
+// Middleware to find a book by book_id --> Post-refactor with knex service
+async function bookExists(req, res, next) {
+    const { bookId } = req.params;
+    const foundBook = await booksService.readBooks(bookId);
+    if (foundBook) {
+        res.locals.book = foundBook;
+        return next();
     }
+    next({ status: 404, message: `Book with ID ${bookId} not found.` });
 }
 
-// GET /books/:bookId
+// GET /books/:bookId --> Pre-refactor with knex service
+// function read(req, res) {
+//     const foundBook = res.locals.book;
+//     return res.json({ data: foundBook });
+// }
+
+// GET /books/:bookId --> Post-refactor with knex service
 function read(req, res) {
-    const foundBook = res.locals.book;
-    return res.json({ data: foundBook });
+    const { book: data } = res.locals;
+    res.json({ data });
 }
 
 /*   *** Update ***   */
@@ -140,6 +157,7 @@ module.exports = {
     create: [validateBookData, create],
     update: [bookExists, validateBookData, updateBook],
     deleteBook: [bookExists, deleteBook],
+    readBooks: [bookExists, asyncErrorBoundary(booksService.readBooks)],
     countBooks: asyncErrorBoundary(countBooks),
     listOutOfStockBooks: asyncErrorBoundary(listOutOfStockBooks),
     listInStockBooks: asyncErrorBoundary(listInStockBooks),

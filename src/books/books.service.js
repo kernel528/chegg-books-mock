@@ -29,12 +29,17 @@ function countOutOfStockBooks() {
     return knex("books").where({ in_stock: false }).count("book_id");
 }
 
-// function readBooks() {
-//     return knex("books").select("*");
-// }
+// Get Book by ID
+function readBooks(book_id) {
+    return knex("books as b")
+        .select("b.*")
+        .where({ "b.book_id": book_id })
+        .first();
+}
 
 module.exports = {
     listBooks,
+    readBooks,
     countBooks,
     listInStockBooks,
     countInStockBooks,
