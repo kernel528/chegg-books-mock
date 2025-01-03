@@ -4,7 +4,7 @@ const hasProperties = require("../errors/hasProperties");
 const hasRequiredProperties = hasProperties("book_title", "author_id", "genre_id");
 
 // const books = require("../data/books-data.js");
-const nextId = require("../utils/nextId");
+// const nextId = require("../utils/nextId");
 const booksService = require("./books.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
@@ -61,7 +61,6 @@ async function bookExists(req, res, next) {
     next({ status: 404, message: `Book with ID ${bookId} not found.` });
 }
 
-
 // GET /books/:bookId --> Post-refactor with knex service
 function read(req, res) {
     const { book: data } = res.locals;
@@ -87,14 +86,33 @@ function updateBook(req, res ) {
 }
 
 /*   *** Delete ***   */
-// /books/:bookId DELETE
-function deleteBook(req, res) {
-    const { bookId } = req.params;
-    const index = books.findIndex((book) => book.book_id === bookId);
-    if (index > -1) {
-        books.splice(index, 1);
+// /books/:bookId DELETE --> Pre-refactor with knex service
+// function deleteBook(req, res) {
+//     const { bookId } = req.params;
+//     const index = books.findIndex((book) => book.book_id === bookId);
+//     if (index > -1) {
+//         books.splice(index, 1);
+//     }
+//     res.sendStatus(204);
+// }
+
+// /books/:bookId DELETE --> Post-refactor with knex service
+// First attempt --> This worked fine, but decided to add deleted to check delete status before responding.
+// async function deleteBook(req, res) {
+//     const { book } = res.locals;
+//     await booksService.deleteBook(book.book_id);
+//     res.sendStatus(204);
+// }
+// Second attempt
+async function deleteBook(req, res, next) {
+    const { book } = res.locals;
+    const deleted = await booksService.deleteBook(book.book_id);
+
+    if (deleted) {
+        res.sendStatus(204);
+    } else {
+        next({ status: 404, message: `Book with ID ${book.book_id} not found.` });
     }
-    res.sendStatus(204);
 }
 
 // Practice setting up aggregate functions with async and await style.
@@ -128,7 +146,8 @@ module.exports = {
         asyncErrorBoundary(createBooks),
     ],
     // update: [bookExists, validateBookData, updateBook],
-    deleteBook: [bookExists, deleteBook],
+    // deleteBook: [bookExists, deleteBook],
+    deleteBook: [asyncErrorBoundary(bookExists), asyncErrorBoundary(deleteBook)],
     readBooks: [bookExists, asyncErrorBoundary(booksService.readBooks)],
     countBooks: asyncErrorBoundary(countBooks),
     listOutOfStockBooks: asyncErrorBoundary(listOutOfStockBooks),
