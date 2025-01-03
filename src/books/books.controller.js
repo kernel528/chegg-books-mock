@@ -98,7 +98,7 @@ function updateBook(req, res ) {
 
 // /books/:bookId DELETE --> Post-refactor with knex service
 // First attempt --> This worked fine, but decided to add deleted to check delete status before responding.
-// function deleteBook(req, res) {
+// async function deleteBook(req, res) {
 //     const { book } = res.locals;
 //     await booksService.deleteBook(book.book_id);
 //     res.sendStatus(204);
