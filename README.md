@@ -362,9 +362,9 @@ Goals:
 10. Create the service functions for the books, authors, and genres resources. [Module 3.10.6: CRUD with Knex](https://students.skills.chegg.com/curriculum/BACK_END-501/be-backend-web-development/be-node-express-and-postgres/be-crud-with-knex)
     - Intent is to create the service functions for the books, authors, and genres resources.  Examples would be to:
       - [ x ] list all books,
-      - [ ] Get a book by id.
+      - [ x ] Get a book by id.
       - [ ] Get a book by title.
-      - [ ] add a new book, 
+      - [ x ] add a new book, 
       - [ ] update a book, 
       - [ ] delete a book.
       - [ x ] Count the number of books.

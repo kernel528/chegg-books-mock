@@ -37,6 +37,13 @@ function readBooks(book_id) {
         .first();
 }
 
+function createBooks(newBook) {
+    return knex("books")
+        .insert(newBook)
+        .returning("*")
+        .then((createdRecords) => createdRecords[0]);
+}
+
 module.exports = {
     listBooks,
     readBooks,
@@ -45,4 +52,5 @@ module.exports = {
     countInStockBooks,
     listOutOfStockBooks,
     countOutOfStockBooks,
+    createBooks,
 };

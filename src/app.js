@@ -23,7 +23,13 @@ app.use("/authors", authorsRouter);
 app.use(methodNotAllowed);
 
 // Add error handler here
-app.use(errorHandler);
+// app.use(errorHandler);
+// Error handler
+app.use((error, req, res, next) => {
+  console.error(error);
+  const { status = 500, message = "Something went wrong!" } = error;
+  res.status(status).json({ error: message });
+});
 
 
 module.exports = app;
