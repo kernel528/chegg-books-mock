@@ -68,42 +68,35 @@ function read(req, res) {
 }
 
 /*   *** Update ***   */
-// /books/:bookId PUT
-function updateBook(req, res ) {
-    const foundBook = res.locals.book;
-    const { data: { title, author_name, publication_year, genre, in_stock } = {} } = req.body;
-
-    // TODO: Add check for field types and values exist, etc..., Example:  GrubDash src/dishes/dishes.controller.js
-
-    // Update the book object with the new data
-    foundBook.title = title;
-    foundBook.author_name = author_name;
-    foundBook.publication_year = publication_year;
-    foundBook.genre = genre;
-    foundBook.in_stock = in_stock;
-
-    res.json({ data: foundBook });
+// /books/:bookId PUT --> Pre-refactor with knex service
+// function updateBook(req, res ) {
+//     const foundBook = res.locals.book;
+//     const { data: { title, author_name, publication_year, genre, in_stock } = {} } = req.body;
+//
+//     // TODO: Add check for field types and values exist, etc..., Example:  GrubDash src/dishes/dishes.controller.js
+//
+//     // Update the book object with the new data
+//     foundBook.title = title;
+//     foundBook.author_name = author_name;
+//     foundBook.publication_year = publication_year;
+//     foundBook.genre = genre;
+//     foundBook.in_stock = in_stock;
+//
+//     res.json({ data: foundBook });
+// }
+// /books/:bookId PUT --> Post-refactor with knex service, using async/await
+async function updateBook(req, res) {
+    const { book } = res.locals;
+    const updatedBook = {
+        ...req.body.data,
+        book_id: book.book_id,
+    };
+    const data = await booksService.updateBook(updatedBook);
+    res.json({ data });
 }
 
 /*   *** Delete ***   */
-// /books/:bookId DELETE --> Pre-refactor with knex service
-// function deleteBook(req, res) {
-//     const { bookId } = req.params;
-//     const index = books.findIndex((book) => book.book_id === bookId);
-//     if (index > -1) {
-//         books.splice(index, 1);
-//     }
-//     res.sendStatus(204);
-// }
-
-// /books/:bookId DELETE --> Post-refactor with knex service
-// First attempt --> This worked fine, but decided to add deleted to check delete status before responding.
-// async function deleteBook(req, res) {
-//     const { book } = res.locals;
-//     await booksService.deleteBook(book.book_id);
-//     res.sendStatus(204);
-// }
-// Second attempt
+// /books/:bookId DELETE --> Post-refactor with knex service, using async/await
 async function deleteBook(req, res, next) {
     const { book } = res.locals;
     const deleted = await booksService.deleteBook(book.book_id);
@@ -146,6 +139,7 @@ module.exports = {
         asyncErrorBoundary(createBooks),
     ],
     // update: [bookExists, validateBookData, updateBook],
+    update: [asyncErrorBoundary(bookExists), hasOnlyValidProperties, hasRequiredProperties, asyncErrorBoundary(updateBook)],
     // deleteBook: [bookExists, deleteBook],
     deleteBook: [asyncErrorBoundary(bookExists), asyncErrorBoundary(deleteBook)],
     readBooks: [bookExists, asyncErrorBoundary(booksService.readBooks)],
