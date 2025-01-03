@@ -55,6 +55,20 @@ async function createAuthor(req, res) {
     res.status(201).json({ data: newAuthor });
 }
 
+/* ** PUT:update ** */
+
+/* ** DELETE:destroy ** */
+async function deleteAuthor(req, res, next) {
+    const { author } = res.locals;
+    const deleted = await authorsService.deleteAuthor(author.author_id);
+
+    if (deleted) {
+        res.sendStatus(204);
+    } else {
+        next({ status: 404, message: `Author with ID ${author.author_id} not found.` });
+    }
+}
+
 module.exports = {
     list: asyncErrorBoundary(listAuthors),
     read: [
@@ -66,5 +80,9 @@ module.exports = {
         hasOnlyValidProperties,
         hasRequiredProperties,
         asyncErrorBoundary(createAuthor),
-    ]
+    ],
+    deleteAuthor: [
+        asyncErrorBoundary(authorExists),
+        asyncErrorBoundary(deleteAuthor),
+    ],
 };

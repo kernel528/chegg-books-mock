@@ -21,8 +21,16 @@ function createAuthor(newAuthor) {
         .then((createdRecords) => createdRecords[0]);
 }
 
+// Update an author...
+
+// Delete an author...
+function deleteAuthor(author_id) {
+    return knex("authors").where({ author_id }).del();
+}
+
 module.exports = {
     listAuthors,
     readAuthor,
     createAuthor,
+    deleteAuthor,
 }

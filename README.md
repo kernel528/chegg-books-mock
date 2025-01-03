@@ -377,10 +377,11 @@ Goals:
       - [ x ] list all authors. (Using flat-file data to validate initial route setup.)
       - [ x ] list all authors (knex)  Branch: `feature/update-authors-list-knex`
       - [ x ] Get an author by id. (knex)  Branch: `feature/update-authors-list-knex`, `feature/add-authors-create-update-delete-support`
-      - [ x ] add a new author.
-      - [ ] update an author.
-      - [ ] delete an author.
+      - [ x ] add a new author. Branch: `feature/add-authors-create-update-delete-support`
+      - [ ] update an author.  Branch: `feature/add-authors-create-update-delete-support`
+      - [ x ] delete an author.  Branch: `feature/add-authors-create-update-delete-support`
       - [ ] list all genres.
+      - [ ] Get a genre by id.
       - [ ] add a new genre.
       - [ ] update a genre.
       - [ ] delete a genre.
