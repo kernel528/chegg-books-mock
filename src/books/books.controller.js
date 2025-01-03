@@ -97,17 +97,15 @@ function updateBook(req, res ) {
 // }
 
 // /books/:bookId DELETE --> Post-refactor with knex service
-// First attempt
+// First attempt --> This worked fine, but decided to add deleted to check delete status before responding.
 // function deleteBook(req, res) {
 //     const { book } = res.locals;
-//     booksService.deleteBook(book.book_id);
+//     await booksService.deleteBook(book.book_id);
 //     res.sendStatus(204);
 // }
 // Second attempt
 async function deleteBook(req, res, next) {
     const { book } = res.locals;
-    // await booksService.deleteBook(book.book_id);  --> These worked but decided to add deleted to check delete status before responding.
-    // res.sendStatus(204);
     const deleted = await booksService.deleteBook(book.book_id);
 
     if (deleted) {
