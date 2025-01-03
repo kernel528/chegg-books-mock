@@ -36,12 +36,17 @@ function readBooks(book_id) {
         .where({ "b.book_id": book_id })
         .first();
 }
+// Get Book by Title - TBD
 
 function createBooks(newBook) {
     return knex("books")
         .insert(newBook)
         .returning("*")
         .then((createdRecords) => createdRecords[0]);
+}
+
+function deleteBook(book_id) {
+    return knex("books").where({ book_id }).del();
 }
 
 module.exports = {
@@ -53,4 +58,5 @@ module.exports = {
     listOutOfStockBooks,
     countOutOfStockBooks,
     createBooks,
+    deleteBook,
 };
