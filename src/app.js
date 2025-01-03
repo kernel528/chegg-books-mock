@@ -6,7 +6,7 @@ const morgan = require("morgan");
 const errorHandler = require("./errors/errorHandler");
 const methodNotAllowed = require("./errors/methodNotAllowed");
 const booksRouter = require("./books/books.router");
-// const authorsRouter = require("./authors/authors.router");
+const authorsRouter = require("./authors/authors.router");
 
 app.use(express.json());
 app.use(cors());
@@ -17,6 +17,7 @@ app.get("/", (req, res) => {
   res.send("Hello!  Welcome to the Books and Authors API Query Service!");
 });
 app.use("/books", booksRouter);
+app.use("/authors", authorsRouter);
 
 // Add method not allowed handler here
 app.use(methodNotAllowed);
