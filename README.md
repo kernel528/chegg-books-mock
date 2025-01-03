@@ -361,13 +361,26 @@ Goals:
     - [ ] Validate data exists with DBeaver.
 10. Create the service functions for the books, authors, and genres resources. [Module 3.10.6: CRUD with Knex](https://students.skills.chegg.com/curriculum/BACK_END-501/be-backend-web-development/be-node-express-and-postgres/be-crud-with-knex)
     - Intent is to create the service functions for the books, authors, and genres resources.  Examples would be to:
-      - [ ] list all books, 
+      - [ x ] list all books,
+      - [ ] Get a book by id.
+      - [ ] Get a book by title.
       - [ ] add a new book, 
       - [ ] update a book, 
       - [ ] delete a book.
-      - [ ] Count the number of books.
-      - [ ] Get a book by id.
-      - [ ] Create a `books.service.js` file in the `src/books` folder.
+      - [ x ] Count the number of books.
+      - [ x ] List the `out-of-stock` books.
+      - [ x ] List the `in-stock` books.
+      - [ x ] Count the number of `in_stock` books.
+      - [ x ] Count the number of `out-of-stock` books.
+      - [ ] list all authors.
+      - [ ] add a new author.
+      - [ ] update an author.
+      - [ ] delete an author.
+      - [ ] list all genres.
+      - [ ] add a new genre.
+      - [ ] update a genre.
+      - [ ] delete a genre.
+      - [ x ] Create a `books.service.js` file in the `src/books` folder.
       - [ ] Create a `authors.service.js` file in the `src/authors` folder.
       - [ ] Create a `genres.service.js` file in the `src/genres` folder.
       - [ ] Implement the service functions for the books, authors, and genres resources.
