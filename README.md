@@ -366,16 +366,17 @@ Goals:
     - Intent is to create the service functions for the books, authors, and genres resources.  Examples would be to:
       - [ x ] list all books,  Branch: `add-books.service-get`
       - [ x ] Get a book by id.  Branch: `feature/update-books-with-addtl-services`
-      ~~- [ ] Get a book by title.~~
       - [ x ] add a new book, Branch: `feature/update-books-with-addtl-services-2`
-      - [ X ] update a book. Based on `book_id`.
-      - [ x ] delete a book. Based on `book_id`.
+      - [ X ] update a book. Based on `book_id`. `feature/update-book-by-id`
+      - [ x ] delete a book. Based on `book_id`. `feature/delete-book-by-id`
       - [ x ] Count the number of books. Branch: `feature/add-books-route-services-aggregate-middleware`
       - [ x ] List the `out-of-stock` books.  Branch: `feature/add-books-route-services-aggregate-middleware`
       - [ x ] List the `in-stock` books.  Branch: `feature/add-books-route-services-aggregate-middleware`
       - [ x ] Count the number of `in_stock` books.  Branch: `feature/add-books-route-services-aggregate-middleware`
       - [ x ] Count the number of `out-of-stock` books.  Branch: `feature/add-books-route-services-aggregate-middleware`
-      - [ x ] list all authors.
+      - [ x ] list all authors. (Using flat-file data to validate initial route setup.)
+      - [ x ] list all authors (knex)  Branch: `feature/update-authors-list-knex`
+      - [ x ] Get an author by id. (knex)  Branch: `feature/update-authors-list-knex`
       - [ ] add a new author.
       - [ ] update an author.
       - [ ] delete an author.
