@@ -49,6 +49,13 @@ function deleteBook(book_id) {
     return knex("books").where({ book_id }).del();
 }
 
+function updateBook(updatedBook) {
+    return knex("books")
+        .select("*")
+        .where({ book_id: updatedBook.book_id })
+        .update(updatedBook, "*");
+}
+
 module.exports = {
     listBooks,
     readBooks,
@@ -59,4 +66,5 @@ module.exports = {
     countOutOfStockBooks,
     createBooks,
     deleteBook,
+    updateBook,
 };

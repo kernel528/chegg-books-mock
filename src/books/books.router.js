@@ -18,7 +18,7 @@ router.route("/out-of-stock-count").get(booksController.countOutOfStockBooks).al
 router
     .route("/:bookId")
     .get(booksController.read)
-    // .put(booksController.update)
+    .put(booksController.update)
     .delete(booksController.deleteBook)
     .all(methodNotAllowed);
 

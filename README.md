@@ -368,7 +368,7 @@ Goals:
       - [ x ] Get a book by id.  Branch: `feature/update-books-with-addtl-services`
       ~~- [ ] Get a book by title.~~
       - [ x ] add a new book, Branch: `feature/update-books-with-addtl-services-2`
-      - [ ] update a book. Based on `book_id`.
+      - [ X ] update a book. Based on `book_id`.
       - [ x ] delete a book. Based on `book_id`.
       - [ x ] Count the number of books. Branch: `feature/add-books-route-services-aggregate-middleware`
       - [ x ] List the `out-of-stock` books.  Branch: `feature/add-books-route-services-aggregate-middleware`
