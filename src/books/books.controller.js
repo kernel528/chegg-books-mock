@@ -1,25 +1,41 @@
+// Description: Controller for books
 const path = require("path");
-/**
- * @type {{}}
- */
+const hasProperties = require("../errors/hasProperties");
+const hasRequiredProperties = hasProperties("book_title", "author_id", "genre_id");
 
 // const books = require("../data/books-data.js");
 const nextId = require("../utils/nextId");
 const booksService = require("./books.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
-/*  *** GET:list *** */ // Pre-refactor with knex service
-// function list(req, res) {
-//     res.json({ data: books }); // Pre-refactor with knex service
-// }
+/**
+ * @type {{}}
+ */
 
-/* *** GET:list *** */ // Post-refactor with knex service
-// function listBooks(req, res, next) {
-//     booksService
-//         .listBooks()
-//         .then((data) => res.json({ data }))
-//         .catch(next);
-// }
+const VALID_PROPERTIES = [
+    "book_title",
+    "author_id",
+    "publication_year",
+    "genre_id",
+    "price",
+    "in_stock",
+];
+
+function hasOnlyValidProperties(req, res, next) {
+    const { data = {} } = req.body;
+
+    const invalidFields = Object.keys(data).filter(
+        (field) => !VALID_PROPERTIES.includes(field)
+    );
+
+    if (invalidFields.length) {
+        return next({
+            status: 400,
+            message: `Invalid field(s): ${invalidFields.join(", ")}`,
+        });
+    }
+    next();
+}
 
 /* *** GET:list *** */ // Post-refactor with knex service + async/await
 async function listBooks(req, res) {
@@ -27,56 +43,12 @@ async function listBooks(req, res) {
     res.json({ data });
 }
 
-/*  *** POST:create *** */
-// Create new book object
-function create(req, res, next) {
-    const { data: { title, author_name, publication_year, genre, in_stock } = {} } = req.body;
-    const newBook = {
-        book_id: nextId(),
-        title,
-        author_name,
-        publication_year,
-        genre,
-        in_stock,
-    };
-    books.push(newBook); // Add the new book to the books array
-    return res.status(201).json({ data: newBook });
+// Create new book object --> Post-refactor with knex service
+async function createBooks(req, res) {
+    const data = await booksService.createBooks(req.body.data);
+    res.status(201).json({ data });
 }
 
-// Middleware - Validate the data for creating a new book
-function validateBookData(req, res, next) {
-    const { data: { title, author_name, publication_year, genre, in_stock } = {} } = req.body;
-
-    const missingFields = [];
-    if (!title) missingFields.push("title");
-    if (!author_name) missingFields.push("author_name");
-    if (!publication_year) missingFields.push("publication_year");
-    if (!genre) missingFields.push("genre");
-    if (in_stock === undefined) missingFields.push("in_stock");
-
-    if (missingFields.length) {
-        return next({
-            status: 400,
-            message: `Missing required fields: ${missingFields.join(", ")}`,
-        });
-    }
-
-    next();
-}
-
-/*   *** READ ***   */
-// Middleware to find a book by book_id --> Pre-refactor with knex service
-// function bookExists(req, res, next) {
-//     const { bookId } = req.params;
-//     const book = books.find((book) => book.book_id === bookId); // Match book_id as a string
-//
-//     if (book) {
-//         res.locals.book = book; // Store the found book in res.locals
-//         return next(); // Proceed to the next middleware or route handler
-//     } else {
-//         next({ status: 404, message: `Book with ID ${bookId} not found.` });
-//     }
-// }
 
 // Middleware to find a book by book_id --> Post-refactor with knex service
 async function bookExists(req, res, next) {
@@ -89,11 +61,6 @@ async function bookExists(req, res, next) {
     next({ status: 404, message: `Book with ID ${bookId} not found.` });
 }
 
-// GET /books/:bookId --> Pre-refactor with knex service
-// function read(req, res) {
-//     const foundBook = res.locals.book;
-//     return res.json({ data: foundBook });
-// }
 
 // GET /books/:bookId --> Post-refactor with knex service
 function read(req, res) {
@@ -154,8 +121,13 @@ async function countOutOfStockBooks(req, res) {
 module.exports = {
     list: asyncErrorBoundary(listBooks),
     read: [bookExists, read],
-    create: [validateBookData, create],
-    update: [bookExists, validateBookData, updateBook],
+    // create: [validateBookData, create],
+    create: [
+        hasOnlyValidProperties,
+        hasRequiredProperties,
+        asyncErrorBoundary(createBooks),
+    ],
+    // update: [bookExists, validateBookData, updateBook],
     deleteBook: [bookExists, deleteBook],
     readBooks: [bookExists, asyncErrorBoundary(booksService.readBooks)],
     countBooks: asyncErrorBoundary(countBooks),
