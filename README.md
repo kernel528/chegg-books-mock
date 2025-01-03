@@ -376,8 +376,8 @@ Goals:
       - [ x ] Count the number of `out-of-stock` books.  Branch: `feature/add-books-route-services-aggregate-middleware`
       - [ x ] list all authors. (Using flat-file data to validate initial route setup.)
       - [ x ] list all authors (knex)  Branch: `feature/update-authors-list-knex`
-      - [ x ] Get an author by id. (knex)  Branch: `feature/update-authors-list-knex`
-      - [ ] add a new author.
+      - [ x ] Get an author by id. (knex)  Branch: `feature/update-authors-list-knex`, `feature/add-authors-create-update-delete-support`
+      - [ x ] add a new author.
       - [ ] update an author.
       - [ ] delete an author.
       - [ ] list all genres.
@@ -385,7 +385,7 @@ Goals:
       - [ ] update a genre.
       - [ ] delete a genre.
       - [ x ] Create a `books.service.js` file in the `src/books` folder.
-      - [ ] Create a `authors.service.js` file in the `src/authors` folder.
+      - [ x ] Create a `authors.service.js` file in the `src/authors` folder.  Branch: `feature/add-authors-create-update-delete-support`
       - [ ] Create a `genres.service.js` file in the `src/genres` folder.
       - [ ] Implement the service functions for the books, authors, and genres resources.
 

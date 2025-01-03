@@ -5,11 +5,14 @@ const methodNotAllowed = require("../errors/methodNotAllowed");
 router
     .route("/")
     .get(authorsController.list)
+    .post(authorsController.create)
     .all(methodNotAllowed);
 
 router
     .route("/:authorId")
     .get(authorsController.read)
+    // .put(authorsController.update)
+    // .deleteAuthor(authorsController.delete)
     .all(methodNotAllowed);
 
 
