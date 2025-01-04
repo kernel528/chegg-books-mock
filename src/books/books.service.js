@@ -1,3 +1,4 @@
+// Description: Service for books
 const knex = require("../db/connection");
 
 function listBooks() {
