@@ -480,7 +480,7 @@ Goals:
 
       ``` 
     - Confirmed with DBeaver the data was seeded.
-- [ ] Deploy the application to a production server.
+- [x] Deploy the application to a production server.
     - Logged into render dashboard and create a new web service.
     - Attached to my kernel528/chegg-books-mock repo.
     - Name:  `kernel528-chegg-books-mock` 
@@ -491,10 +491,9 @@ Goals:
       - value: `take from .env file...`
     - Click on the free tier option.
     - Click on `Deploy Web Service`
-    - Validation application at `https://kernel528-chegg-books-mock.onrender.com/`
-      - Can check routes such as: `https://kernel528-chegg-books-mock.onrender.com/books`
-      - Can check routes such as: `https://kernel528-chegg-books-mock.onrender.com/authors`
-      - Can check routes such as: `https://kernel528-chegg-books-mock.onrender.com/total-books`
-      - Can check routes such as: `https://kernel528-chegg-books-mock.onrender.com/in-stock`
-      - 
-- [ ] Test the application in the production environment.
+    - Validation application at https://kernel528-chegg-books-mock.onrender.com/
+      - Can check routes such as: https://kernel528-chegg-books-mock.onrender.com/books
+      - Can check routes such as: https://kernel528-chegg-books-mock.onrender.com/authors
+      - Can check routes such as: https://kernel528-chegg-books-mock.onrender.com/total-books
+      - Can check routes such as: https://kernel528-chegg-books-mock.onrender.com/in-stock
+- [x] Test the application in the production environment.
