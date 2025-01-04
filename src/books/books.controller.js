@@ -1,16 +1,11 @@
 // Description: Controller for books
 const path = require("path");
+const booksService = require("./books.service");
+
 const hasProperties = require("../errors/hasProperties");
 const hasRequiredProperties = hasProperties("book_title", "author_id", "genre_id");
 
-// const books = require("../data/books-data.js");
-// const nextId = require("../utils/nextId");
-const booksService = require("./books.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
-
-/**
- * @type {{}}
- */
 
 const VALID_PROPERTIES = [
     "book_title",
@@ -62,28 +57,12 @@ async function bookExists(req, res, next) {
 }
 
 // GET /books/:bookId --> Post-refactor with knex service
-function read(req, res) {
+function readBooks(req, res) {
     const { book: data } = res.locals;
     res.json({ data });
 }
 
 /*   *** Update ***   */
-// /books/:bookId PUT --> Pre-refactor with knex service
-// function updateBook(req, res ) {
-//     const foundBook = res.locals.book;
-//     const { data: { title, author_name, publication_year, genre, in_stock } = {} } = req.body;
-//
-//     // TODO: Add check for field types and values exist, etc..., Example:  GrubDash src/dishes/dishes.controller.js
-//
-//     // Update the book object with the new data
-//     foundBook.title = title;
-//     foundBook.author_name = author_name;
-//     foundBook.publication_year = publication_year;
-//     foundBook.genre = genre;
-//     foundBook.in_stock = in_stock;
-//
-//     res.json({ data: foundBook });
-// }
 // /books/:bookId PUT --> Post-refactor with knex service, using async/await
 async function updateBook(req, res) {
     const { book } = res.locals;
@@ -131,18 +110,26 @@ async function countOutOfStockBooks(req, res) {
 
 module.exports = {
     list: asyncErrorBoundary(listBooks),
-    read: [bookExists, read],
-    // create: [validateBookData, create],
+    read: [
+        asyncErrorBoundary(bookExists),
+        asyncErrorBoundary(readBooks),
+    ],
     create: [
         hasOnlyValidProperties,
         hasRequiredProperties,
         asyncErrorBoundary(createBooks),
     ],
-    // update: [bookExists, validateBookData, updateBook],
-    update: [asyncErrorBoundary(bookExists), hasOnlyValidProperties, hasRequiredProperties, asyncErrorBoundary(updateBook)],
-    // deleteBook: [bookExists, deleteBook],
-    deleteBook: [asyncErrorBoundary(bookExists), asyncErrorBoundary(deleteBook)],
-    readBooks: [bookExists, asyncErrorBoundary(booksService.readBooks)],
+    update: [
+        asyncErrorBoundary(bookExists),
+        hasOnlyValidProperties,
+        hasRequiredProperties,
+        asyncErrorBoundary(updateBook)
+    ],
+    deleteBook: [
+        asyncErrorBoundary(bookExists),
+        asyncErrorBoundary(deleteBook)
+    ],
+    // Aggregates
     countBooks: asyncErrorBoundary(countBooks),
     listOutOfStockBooks: asyncErrorBoundary(listOutOfStockBooks),
     listInStockBooks: asyncErrorBoundary(listInStockBooks),

@@ -36,7 +36,6 @@ function readBooks(book_id) {
         .where({ "b.book_id": book_id })
         .first();
 }
-// Get Book by Title - TBD
 
 function createBooks(newBook) {
     return knex("books")
