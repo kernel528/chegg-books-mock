@@ -255,15 +255,17 @@ Goals:
      20250102003025_createBooks_GenresTable.js
      ```
 6. Update the migrations files with table schema.
-   - [ x ] Update the `up` and `down` functions in the migration files to create and drop the tables.
-   - [ x ] Use `npx knex -- migrate:latest` to run the migrations.
-     ```bash
-     : npx knex -- migrate:latest
-     Using environment: development
-     Batch 1 run: 4 migrations 
-     ```
-   - Error: Initially I was running into this error, and it was due to not properly defining the book_id and genre_id as foreign keys in the createBooksTable file.
+   - Update the `up` and `down` functions in the migration files to create and drop the tables.
+   - Use `npx knex -- migrate:latest` to run the migrations.
+
       ```bash
+        : npx knex -- migrate:latest
+        Using environment: development
+        Batch 1 run: 4 migrations 
+      ```
+   - Initially I was running into this error, and it was due to not properly defining the book_id and genre_id as foreign keys in the createBooksTable file.
+      
+     ```bash
         : npx knex -- migrate:latest
         Using environment: development
         migration file "20250102003013_createBooksTable.js" failed
@@ -282,11 +284,11 @@ Goals:
         at async Runner.run (/Users/joe/github/kernel528/Chegg-Skills/Projects/Backend-Web-Dev/Mock Interview Prep/chegg-books-mock/node_modules/knex/lib/execution/runner.js:30:19)
       ```
    - Successful migration run...
-     ```bash
-     : npx knex -- migrate:latest
-     Using environment: development
-     Batch 1 run: 4 migrations 
-     Error: relation "books_genres" does not exist
+      ```bash
+        : npx knex -- migrate:latest
+        Using environment: development
+        Batch 1 run: 4 migrations 
+        Error: relation "books_genres" does not exist
      ```
    - Check the database to ensure the tables were created.
 7. Use `knex` to create seed files for the tables. [Module 3.10.5: Seeding Data with Knex](https://students.skills.chegg.com/curriculum/BACK_END-501/be-backend-web-development/be-node-express-and-postgres/be-seeding-data-with-knex)
@@ -325,7 +327,7 @@ Goals:
      ```
     - This resolved the error for `in_stock` but I ran into another error for `publication_year`.
         - Error:  `column "publication_year" of relation "books" does not exist`
-    - [ ] I created another migration file to include the `publication_year` column.
+    - [x] I created another migration file to include the `publication_year` column.
        ```bash
        : npx knex migrate:make add_publication_year_to_books
        Using environment: development
@@ -334,7 +336,7 @@ Goals:
        Created Migration: /Users/joe/github/kernel528/Chegg-Skills/Projects/Backend-Web-Dev/Mock Interview Prep/chegg-books-mock/src/db/migrations/20250102031854_add_publication_year_to_books.js
       ```
     - Another column error encountered. `column "title" of relation "books" does not exist`
-    - [ ] I created another migration file to include the `title` column.
+    - [x]I created another migration file to include the `title` column.
        ```bash
        : npx knex migrate:make add_title_to_books
        Using environment: development
@@ -363,7 +365,7 @@ Goals:
     ```
     - [ ] Validate data exists with DBeaver.
 10. Create the service functions for the books, authors, and genres resources. [Module 3.10.6: CRUD with Knex](https://students.skills.chegg.com/curriculum/BACK_END-501/be-backend-web-development/be-node-express-and-postgres/be-crud-with-knex)
-    - Intent is to create the service functions for the books, authors, and genres resources.  Examples would be to:
+    - Implement the service functions for the books, authors, and genres resources.
       - [ x ] list all books,  Branch: `add-books.service-get`
       - [ x ] Get a book by id.  Branch: `feature/update-books-with-addtl-services`
       - [ x ] add a new book, Branch: `feature/update-books-with-addtl-services-2`
@@ -376,18 +378,18 @@ Goals:
       - [ x ] Count the number of `out-of-stock` books.  Branch: `feature/add-books-route-services-aggregate-middleware`
       - [ x ] list all authors. (Using flat-file data to validate initial route setup.)
       - [ x ] list all authors (knex)  Branch: `feature/update-authors-list-knex`
-      - [ x ] Get an author by id. (knex)  Branch: `feature/update-authors-list-knex`
-      - [ ] add a new author.
-      - [ ] update an author.
-      - [ ] delete an author.
+      - [ x ] Get an author by id. (knex)  Branch: `feature/update-authors-list-knex`, `feature/add-authors-create-update-delete-support`
+      - [ x ] add a new author. Branch: `feature/add-authors-create-update-delete-support`
+      - [ x ] update an author.  Branch: `feature/add-authors-create-update-delete-support`
+      - [ x ] delete an author.  Branch: `feature/add-authors-create-update-delete-support`
       - [ ] list all genres.
+      - [ ] Get a genre by id.
       - [ ] add a new genre.
       - [ ] update a genre.
       - [ ] delete a genre.
       - [ x ] Create a `books.service.js` file in the `src/books` folder.
-      - [ ] Create a `authors.service.js` file in the `src/authors` folder.
+      - [ x ] Create a `authors.service.js` file in the `src/authors` folder.  Branch: `feature/add-authors-create-update-delete-support`
       - [ ] Create a `genres.service.js` file in the `src/genres` folder.
-      - [ ] Implement the service functions for the books, authors, and genres resources.
 
 ### Deploy to Production
 - Update and Deploy to Production
