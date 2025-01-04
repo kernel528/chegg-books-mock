@@ -400,8 +400,84 @@ Goals:
        - [ ] Create a `genres.service.js` file in the `src/genres` folder.
 
 ### Deploy to Production
-- [ ] Update the `knexfile.js` file to include the production configuration.
-- [ ] Update the `.env` file to store the production database connection string.
-- [ ] Run the migrations and seeds in the production environment.
+- [x] Update the `knexfile.js` file to include the production configuration.
+    - I re-used the existing render hosted `PROD` database for this project.    
+- [x] Update the `.env` file to store the production database connection string.
+- [x] Run the migrations on the production environment.
+    - Initial knex migration errored due to missing migration files on the shared production database.  I had to copy migration files from `node, express, postgres` and the `cors` module.
+      ```bash
+      : NODE_ENV=production npx knex migrate:list
+      Using environment: production
+      The migration directory is corrupt, the following files are missing: 20241213193233_createSuppliersTable.js, 20241213194941_createProductsTable.js, 20241213204943_createCategoriesTable.js, 20241213205201_createProductsCategoriesTable.js, 20241213222635_productsAddPriceAndChangeProductNameToProductTitle.js, 20201213083928_createArticlesTable.js
+      Error: The migration directory is corrupt, the following files are missing: 20241213193233_createSuppliersTable.js, 20241213194941_createProductsTable.js, 20241213204943_createCategoriesTable.js, 20241213205201_createProductsCategoriesTable.js, 20241213222635_productsAddPriceAndChangeProductNameToProductTitle.js, 20201213083928_createArticlesTable.js
+      at validateMigrationList (/Users/joe/github/kernel528/Chegg-Skills/Projects/Backend-Web-Dev/Mock Interview Prep/chegg-books-mock/node_modules/knex/lib/migrations/migrate/Migrator.js:567:11)
+      at Migrator.list (/Users/joe/github/kernel528/Chegg-Skills/Projects/Backend-Web-Dev/Mock Interview Prep/chegg-books-mock/node_modules/knex/lib/migrations/migrate/Migrator.js:285:7)
+      at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+      
+      : cp ~/github/kernel528/Chegg-Skills/starters/starter-node-express-postgresql/src/db/migrations/20241213* ./src/db/migrations 
+      : cp ~/github/kernel528/Chegg-Skills/starters/starter-tracing-back-end/src/db/migrations/20201213083928_createArticlesTable.js ./src/db/migrations 
+
+      : NODE_ENV=production npx knex migrate:list                                                                                                       
+      Using environment: production
+      Found 6 Completed Migration file/files.
+      20241213193233_createSuppliersTable.js
+      20241213194941_createProductsTable.js
+      20241213204943_createCategoriesTable.js
+      20241213205201_createProductsCategoriesTable.js
+      20241213222635_productsAddPriceAndChangeProductNameToProductTitle.js
+      20201213083928_createArticlesTable.js
+      Found 7 Pending Migration file/files.
+      20250102002758_createGenresTable.js
+      20250102003004_createAuthorsTable.js
+      20250102003013_createBooksTable.js
+      20250102003025_createBooks_GenresTable.js
+      20250102031654_add_in_stock_to_books.js
+      20250102032659_add_publication_year_to_books.js
+      20250102033001_add_title_to_books.js
+      
+      : NODE_ENV=production npx knex migrate:latest
+      Using environment: production
+      Batch 3 run: 7 migrations
+
+      ```
+- [x] Run the seed files on the production environment.
+    ```bash
+     : NODE_ENV=production npx knex seed:run
+    ```
+    - I forgot to remove the `add_title_to_books.js` migration.  So, had to rollback and then remove migration file, then re-run.
+      
+      ```bash
+      : NODE_ENV=production npx knex migrate:rollback
+      Using environment: production
+      Batch 3 rolled back: 7 migrations
+      
+      : mv src/db/migrations/20250102033001_add_title_to_books.js ./
+      : NODE_ENV=production npx knex migrate:list                   
+      Using environment: production
+      Found 6 Completed Migration file/files.
+      20241213193233_createSuppliersTable.js
+      20241213194941_createProductsTable.js
+      20241213204943_createCategoriesTable.js
+      20241213205201_createProductsCategoriesTable.js
+      20241213222635_productsAddPriceAndChangeProductNameToProductTitle.js
+      20201213083928_createArticlesTable.js
+      Found 6 Pending Migration file/files.
+      20250102002758_createGenresTable.js
+      20250102003004_createAuthorsTable.js
+      20250102003013_createBooksTable.js
+      20250102003025_createBooks_GenresTable.js
+      20250102031654_add_in_stock_to_books.js
+      20250102032659_add_publication_year_to_books.js
+      
+      : NODE_ENV=production npx knex migrate:latest
+      Using environment: production
+      Batch 3 run: 6 migrations
+      
+      : NODE_ENV=production npx knex seed:run                       
+      Using environment: production
+      Ran 4 seed files
+
+      ``` 
+    - Confirmed with DBeaver the data was seeded.
 - [ ] Deploy the application to a production server.
 - [ ] Test the application in the production environment.
