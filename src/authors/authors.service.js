@@ -1,3 +1,4 @@
+// Description: Service for authors.
 const knex = require("../db/connection");
 
 // List all authors...

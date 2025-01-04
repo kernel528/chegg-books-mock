@@ -46,7 +46,6 @@ This repo is setup to practice for the the back-end web development mock intervi
         ├── utils.js
 ````
 
-
 ## Project Outline
 1. Pre-work
    - Database:

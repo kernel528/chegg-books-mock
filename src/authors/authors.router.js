@@ -1,3 +1,4 @@
+// Description: Router for authors.
 const router = require("express").Router({ mergeParams: true });
 const authorsController = require("./authors.controller");
 const methodNotAllowed = require("../errors/methodNotAllowed");
