@@ -56,6 +56,15 @@ async function createAuthor(req, res) {
 }
 
 /* ** PUT:update ** */
+async function updateAuthor(req, res) {
+    const { author } = res.locals;
+    const updatedAuthor = {
+        ...req.body.data,
+        author_id: author.author_id,
+    };
+    const data = await authorsService.updateAuthor(updatedAuthor);
+    res.json({ data });
+}
 
 /* ** DELETE:destroy ** */
 async function deleteAuthor(req, res, next) {
@@ -75,11 +84,16 @@ module.exports = {
         asyncErrorBoundary(authorExists),
         asyncErrorBoundary(readAuthor),
     ],
-    // create: asyncErrorBoundary(createAuthor),
     create: [
         hasOnlyValidProperties,
         hasRequiredProperties,
         asyncErrorBoundary(createAuthor),
+    ],
+    update: [
+        asyncErrorBoundary(authorExists),
+        hasOnlyValidProperties,
+        hasRequiredProperties,
+        asyncErrorBoundary(updateAuthor),
     ],
     deleteAuthor: [
         asyncErrorBoundary(authorExists),

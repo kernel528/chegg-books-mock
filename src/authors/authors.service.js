@@ -22,6 +22,12 @@ function createAuthor(newAuthor) {
 }
 
 // Update an author...
+function updateAuthor(updatedAuthor) {
+    return knex("authors as a")
+        .select("a.*")
+        .where({ "a.author_id": updatedAuthor.author_id })
+        .update(updatedAuthor, "*");
+}
 
 // Delete an author...
 function deleteAuthor(author_id) {
@@ -32,5 +38,6 @@ module.exports = {
     listAuthors,
     readAuthor,
     createAuthor,
+    updateAuthor,
     deleteAuthor,
 }

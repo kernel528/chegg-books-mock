@@ -11,7 +11,7 @@ router
 router
     .route("/:authorId")
     .get(authorsController.read)
-    // .put(authorsController.update)
+    .put(authorsController.update)
     .delete(authorsController.deleteAuthor)
     .all(methodNotAllowed);
 
