@@ -1,3 +1,4 @@
+// Description: Router for books.
 const router = require("express").Router({ mergeParams: true });
 const booksController = require("./books.controller");
 const methodNotAllowed = require("../errors/methodNotAllowed");
