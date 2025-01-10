@@ -1,7 +1,9 @@
 # Chegg Books Mock 1
 
 ## Description
-This repo is setup to practice for the the back-end web development mock interview.  The mock interview will be based on the Chegg Books API from Module 3.9.6 Assessment.
+This repo is setup to practice for the the back-end web development mock interview.  
+- This is an extension of the Chegg Books API from Module 3.9.6 Assessment.
+- This is a complete end-to-end setup to practice a full setup, build and deployment of an API service using node, express and postgresql.
 
 ## Project Structure
 ```plaintext
