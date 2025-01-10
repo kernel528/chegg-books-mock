@@ -125,10 +125,10 @@ Branch: `base-api-setup`
     ```
 6. Update the `package.json` file to include the following scripts:
     ```json
-    "scripts": {
-      "start": "node src/server.js",
-      "start:dev": "nodemon src/server.js"
-    }
+     "scripts": {
+       "start": "node src/server.js",
+       "start:dev": "nodemon src/server.js"
+     }
     ```
 
 ## Configure Application & Server Files
