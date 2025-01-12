@@ -6,3 +6,6 @@
 
 # Skip node_modules
 node_modules
+
+# InteliJ Project Files
+.idea
